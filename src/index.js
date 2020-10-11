@@ -37,10 +37,42 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
 }
 
-module.exports = {
-    decode
+function decode(expr) {
+    const space = '**********'
+    const dot = 10
+    const dash = 11
+    const arr = []
+    expr = expr.split('')
+    for (const item of expr) {
+        if (item === ' ') {
+            arr.push(space)
+        } else {
+            let value = getKeyByValue(MORSE_TABLE, item).split('');
+            // console.log(value);
+            const search = /\./g
+            const replaceWith = '10';
+
+            let newStr = value.toString().replace(search, replaceWith)
+            // for (let string of value) {
+            //     console.log(string)
+            //     if (string === '.') string = dot
+            //     else string = dash
+            // }
+            arr.push(newStr)
+        }
+    }
+    console.log(arr)
+
+
+
 }
+const result = "the quick brown fox jumps over the lazy dog";
+decode(result)
+
+// module.exports = {
+//     decode
+// }
