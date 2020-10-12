@@ -1,78 +1,66 @@
 const MORSE_TABLE = {
-    '.-':     'a',
-    '-...':   'b',
-    '-.-.':   'c',
-    '-..':    'd',
-    '.':      'e',
-    '..-.':   'f',
-    '--.':    'g',
-    '....':   'h',
-    '..':     'i',
-    '.---':   'j',
-    '-.-':    'k',
-    '.-..':   'l',
-    '--':     'm',
-    '-.':     'n',
-    '---':    'o',
-    '.--.':   'p',
-    '--.-':   'q',
-    '.-.':    'r',
-    '...':    's',
-    '-':      't',
-    '..-':    'u',
-    '...-':   'v',
-    '.--':    'w',
-    '-..-':   'x',
-    '-.--':   'y',
-    '--..':   'z',
-    '.----':  '1',
-    '..---':  '2',
-    '...--':  '3',
-    '....-':  '4',
-    '.....':  '5',
-    '-....':  '6',
-    '--...':  '7',
-    '---..':  '8',
-    '----.':  '9',
-    '-----':  '0',
+    '.-': 'a',
+    '-...': 'b',
+    '-.-.': 'c',
+    '-..': 'd',
+    '.': 'e',
+    '..-.': 'f',
+    '--.': 'g',
+    '....': 'h',
+    '..': 'i',
+    '.---': 'j',
+    '-.-': 'k',
+    '.-..': 'l',
+    '--': 'm',
+    '-.': 'n',
+    '---': 'o',
+    '.--.': 'p',
+    '--.-': 'q',
+    '.-.': 'r',
+    '...': 's',
+    '-': 't',
+    '..-': 'u',
+    '...-': 'v',
+    '.--': 'w',
+    '-..-': 'x',
+    '-.--': 'y',
+    '--..': 'z',
+    '.----': '1',
+    '..---': '2',
+    '...--': '3',
+    '....-': '4',
+    '.....': '5',
+    '-....': '6',
+    '--...': '7',
+    '---..': '8',
+    '----.': '9',
+    '-----': '0',
 };
 
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-function decode(expr) {
-    const space = '**********'
-    const dot = 10
-    const dash = 11
-    const arr = []
-    expr = expr.split('')
-    for (const item of expr) {
-        if (item === ' ') {
-            arr.push(space)
-        } else {
-            let value = getKeyByValue(MORSE_TABLE, item).split('');
-            // console.log(value);
-            const search = /\./g
-            const replaceWith = '10';
+function getValueByKey(object, key) {
+    return Object.values(object).find(value => value === object[key])
+}
 
-            let newStr = value.toString().replace(search, replaceWith)
-            // for (let string of value) {
-            //     console.log(string)
-            //     if (string === '.') string = dot
-            //     else string = dash
-            // }
-            arr.push(newStr)
+function decode(expr) {
+    const arr = []
+    for (let item of expr.match(/.{1,10}/g)) {
+        let indexOf = item.indexOf('1');
+        if (indexOf === -1) {
+            arr.push(' ')
+        } else {
+            let value = item.slice(indexOf)
+            value = value.toString().replace(/10/g, '.')
+            value = value.toString().replace(/11/g, '-')
+            arr.push(getValueByKey(MORSE_TABLE, value))
         }
     }
-    console.log(arr)
-
-
-
+    return arr.join('')
 }
-const result = "the quick brown fox jumps over the lazy dog";
-decode(result)
 
-// module.exports = {
-//     decode
-// }
+module.exports = {
+    decode
+}
